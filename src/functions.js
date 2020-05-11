@@ -222,12 +222,27 @@ export function footer4(data) { return numToArkan(TP4(data)-OPV4(data));}
 export function footer5(data) { return numToArkan(TP5(data)-OPV5(data));}
 
 export function matrixCode(data) {
-    let d = ArkDay(data)
-    let m = ArkMonth(data);
+    let dd = new Date(data);
+    let d = dd.getDate();
+    let m = dd.getMonth() + 1;
+
     return 55 - d - 2*m;
 }
 export function trueMatrixCode(data,retro) {
     let code = matrixCode(data);
-    if (retro) return code < 40 ? code + 13 : code++;
+    if (retro) return code < 40 ? code + 13 : code + 1;
     return code;
+}
+export function compatibilityArray(a1,a2) {
+    let res=[];
+    a1 = parseInt(a1);
+    a2 = parseInt(a2);
+    res[0] = numToArkan(a1);                                // A1
+    res[1] = numToArkan(a2);                                // A2
+    res[2] = numToArkan(a1 + a2);                           // A3
+    res[4] = numToArkan(a1 + res[2]);                       // A1 + A3
+    res[5] = numToArkan(a2 + res[2]);                       // A2 + A3
+
+    res[3] = numToArkan(res[4]-res[5]);                       // A4
+    return res;
 }

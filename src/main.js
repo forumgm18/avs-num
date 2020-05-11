@@ -17,6 +17,7 @@ function togglePanel(e){
   e.preventDefault();
   this.classList.toggle('show');
   this.nextSibling.classList.toggle('show');
+  this.parentNode.classList.toggle('show');
 
 }
 
@@ -26,12 +27,4 @@ let toddleLinks = document.querySelectorAll('.additionally-link'),
 for (i = 0; i < toddleLinks.length; i++) {
   button = toddleLinks[i];
   button.addEventListener('click', togglePanel);
-
 }
-
-// document.querySelectorAll('.additionally-link').addEventListener('click',function (e) {
-//   e.preventDefault();
-//   this.classList.toggle('show');
-//   this.nextSibling.classList.toggle('show');
-//
-// });

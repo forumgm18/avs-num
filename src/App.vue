@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div id="app">
-<!--      <img alt="Vue logo" src="./assets/logo.png">-->
       <h1>Нумерология - Таро</h1>
       <div class="additionally">
         <a href="#" class="additionally-link"><span>Дополнительно</span></a>
@@ -35,12 +34,13 @@
           <div class="el-input__inner1 num-str ">Цифрами</div>
           <div class="el-input__inner1 num-str ark">Аркан</div>
         </div>
-<!--        <div class="row source-info">-->
-<!--          <el-input  placeholder="Фамилия"  v-model="fam"  clearable>  </el-input>-->
-<!--          <div class="el-input__inner num-str"> {{fam | strToNumStr }} </div>-->
-<!--          <div class="el-input__inner num-str ark"> {{fam | strToArkan }} </div>-->
-<!--        </div>-->
-        <taro-input placeholder="Фамилия" :str="fam"></taro-input>
+        <div class="row source-info">
+          <el-input  placeholder="Фамилия"  v-model="fam"  clearable>  </el-input>
+          <div class="el-input__inner num-str"> {{fam | strToNumStr }} </div>
+          <div class="el-input__inner num-str ark"> {{fam | strToArkan }} </div>
+        </div>
+<!--        <taro-input placeholder="Фамилия" :str="fam"></taro-input>-->
+
         <div class="row source-info">
           <el-input  placeholder="Имя"  v-model="name"  clearable>  </el-input>
           <div class="el-input__inner num-str"> {{ name | strToNumStr }} </div>
@@ -64,11 +64,11 @@
                           value-format="yyyy-MM-dd"
                           placeholder="Дата рождения">
                   </el-date-picker>
-                  <el-checkbox v-model="retro">Ретроградный</el-checkbox>
+                  <el-checkbox v-model="retro" v-if="date">Ретроградный</el-checkbox>
               </div>
             </div>
           </template>
-          <div class="matrix-code">
+          <div class="matrix-code" v-if="date">
               <div class="label">Матричный код</div>
               <div class="matrix-content">
                 <div v-if="retro">
@@ -82,9 +82,19 @@
               </div>
           </div>
         </div>
-        <div class="additionally">
-          <a href="#" class="additionally-link"><span>Совместимость</span></a>
-          <div class="additionally-content">
+
+      </div>
+      <div v-if="date">
+        <h2>Базовый расчет</h2>
+        <base-calculation-table :date="date" ></base-calculation-table>
+        <h2>Таблица</h2>
+        <base-table2 :date="date"></base-table2>
+      </div>
+
+      <div class="additionally">
+        <a href="#" class="additionally-link"><span>Совместимость (Добавить Партнера)</span></a>
+        <div class="additionally-content">
+          <div class="base-info">
             <div class="row source-info header">
               <div class="head-name"></div>
               <div class="el-input__inner1 num-str ">Цифрами</div>
@@ -105,16 +115,64 @@
               <div class="el-input__inner num-str"> {{otch2 |strToNumStr }} </div>
               <div class="el-input__inner num-str ark"> {{otch2 | strToArkan }} </div>
             </div>
+            <div class="row date-info">
 
+              <template>
+                <div class="block">
+                  <div class="label">Дата Рождения:</div>
+                  <div class="date-retro">
+                    <el-date-picker
+                        v-model="date2"
+                        type="date"
+                        format="dd.MM.yyyy"
+                        value-format="yyyy-MM-dd"
+                        placeholder="Дата рождения">
+                    </el-date-picker>
+                    <el-checkbox v-model="retro2" v-if="date2">Ретроградный</el-checkbox>
+                  </div>
+                </div>
+              </template>
+              <div class="matrix-code" v-if="date2">
+                <div class="label">Матричный код</div>
+                <div class="matrix-content">
+                  <div v-if="retro2">
+                    <span>Ретроградно:</span>
+                    <span>{{matrixCode2}}</span>
+                  </div>
+                  <div>
+                    <span>Истинный:</span>
+                    <span>{{trueMatrixCode2}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="date2">
+            <h2>Базовый расчет</h2>
+            <base-calculation-table :date="date2"></base-calculation-table>
+            <h2>Таблица</h2>
+            <base-table2 :date="date2"></base-table2>
           </div>
         </div>
-
       </div>
-      <h2>Базовый расчет</h2>
-      <base-calculation-table :date="date"></base-calculation-table>
-      <h2>Таблица</h2>
-      <base-table2 :date="date"></base-table2>
 
+      <div v-if="date && date2">
+
+      <h2>Композиты</h2>
+        <div class="table">
+          <base-table2-row title="ОПВ" :name="name" :v1="OPV1" :v2="OPV2" :v3="OPV3" :v4="OPV4" :v5="OPV5"></base-table2-row>
+          <base-table2-row title="ОПВ"  :name="name2" :v1="OPV1_2" :v2="OPV2_2" :v3="OPV3_2" :v4="OPV4_2" :v5="OPV5_2"></base-table2-row>
+
+        </div>
+      <div class="compozit">
+        <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>
+        <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>
+        <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>
+        <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>
+        <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>
+        <compozit :a1="TP1" :a2="TP1_2" title="ТП"></compozit>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -124,7 +182,9 @@ import * as func from './functions.js';
 // import tabCell from './components/tabCell.vue'
 import baseCalculationTable from './components/baseCalculationTable.vue'
 import baseTable2 from './components/baseTable2.vue'
-import taroInput from './components/taroInput.vue'
+import baseTable2Row from './components/baseTable2Row.vue'
+import compozit from './components/compozit.vue'
+// import taroInput from './components/taroInput.vue'
 
 
 export default {
@@ -133,7 +193,9 @@ export default {
       // tabCell,
       baseCalculationTable,
       baseTable2,
-      taroInput
+      baseTable2Row,
+      compozit,
+      // taroInput
   },
 
   data() {
@@ -145,12 +207,13 @@ export default {
       vin: '',
       carNum: '',
       text: '',
-      date: '1981-08-02',
+      date: null, // '1981-08-02',
       retro: false,
+      retro2: false,
         fam2: '',
         name2: '',
         otch2: '',
-        date2: '',
+        date2: null //'1967-07-03',
 
 
 
@@ -166,12 +229,17 @@ export default {
   },
   computed: {
       arkDay: function () { return  func.ArkDay(this.date).toString() || ''; },
+      arkDay2: function () { return  func.ArkDay(this.date2).toString() || ''; },
       arkMonth: function () { return  func.ArkMonth(this.date).toString() || ''; },
+      arkMonth2: function () { return  func.ArkMonth(this.date2).toString() || ''; },
       arkYear: function () { return  func.ArkYear(this.date).toString() || ''; },
+      arkYear2: function () { return  func.ArkYear(this.date2).toString() || ''; },
       ADplusAM: function () { return  func.ADplusAM(this.date).toString() || ''; },
       AMplusAY: function () { return  func.AMplusAY(this.date).toString() || ''; },
       ZK: function () { return  func.ZK(this.date).toString() || ''; },
+      ZK2: function () { return  func.ZK(this.date2).toString() || ''; },
       Mission: function () { return  func.Mission(this.date).toString() || ''; },
+      Mission2: function () { return  func.Mission(this.date2).toString() || ''; },
       unrealizedGoal: function () { return  func.unrealizedGoal(this.date).toString() || ''; },
       Future: function () { return  func.future(this.date).toString() || ''; },
       Instrument: function () { return  func.Instrument(this.date).toString() || ''; },
@@ -187,6 +255,7 @@ export default {
       p4: function () { return  (func.numberOfLife(this.date) + 27).toString() || ''; },
       p5: function () { return  (func.numberOfLife(this.date) + 36).toString() || ''; },
       TP1: function () { return  func.TP1(this.date).toString() || ''; },
+      TP1_2: function () { return  func.TP1(this.date2).toString() || ''; },
       TP2: function () { return  func.TP2(this.date).toString() || ''; },
       TP3: function () { return  func.TP3(this.date).toString() || ''; },
       TP4: function () { return  func.TP4(this.date).toString() || ''; },
@@ -196,6 +265,12 @@ export default {
       OPV3: function () { return  func.OPV3(this.date).toString() || ''; },
       OPV4: function () { return  func.OPV4(this.date).toString() || ''; },
       OPV5: function () { return  func.OPV5(this.date).toString() || ''; },
+
+      OPV1_2: function () { return  func.OPV1(this.date2).toString() || ''; },
+      OPV2_2: function () { return  func.OPV2(this.date2).toString() || ''; },
+      OPV3_2: function () { return  func.OPV3(this.date2).toString() || ''; },
+      OPV4_2: function () { return  func.OPV4(this.date2).toString() || ''; },
+      OPV5_2: function () { return  func.OPV5(this.date2).toString() || ''; },
 
       roof1: function () { return  func.roof1(this.date).toString() || ''; },
       roof2: function () { return  func.roof2(this.date).toString() || ''; },
@@ -211,35 +286,37 @@ export default {
 
       matrixCode: function () { return  func.matrixCode(this.date) || 0; }, // Матричный код (или ретроградный)
       trueMatrixCode: function () { return  func.trueMatrixCode(this.date, this.retro) || 0; }, // Истинный Матричный код в случае ретроградности
+      matrixCode2: function () { return  func.matrixCode(this.date2) || 0; }, // Матричный код (или ретроградный)
+      trueMatrixCode2: function () { return  func.trueMatrixCode(this.date2, this.retro2) || 0; }, // Истинный Матричный код в случае ретроградности
 
 
   },
-  // whatch: {
-  //     date : function (val) {
-  //         let s = func.ArkDay(val).toString();
-  //         console.log('arkDay: ',s);
-  //         this.arkDay =  s || '';
-  //     }
-  // }
-
 
 }
 
 </script>
 
 <style>
+  * {box-sizing: border-box;}
+  body {
+    margin: 0;
+    padding: 0;
+
+  }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+
   max-width: 100%;
   background-color: #fafafa;
+  padding: 0 15px;
+  /*padding-top: 40px;*/
 }
-
+  .table {border: 1px solid gray;}
  .container {
-     border: 1px solid red;
+     /*border: 1px solid red;*/
    margin: 0 auto;
    max-width: 992px;
    width: 100%;
@@ -306,20 +383,29 @@ export default {
 
 .additionally {
   text-align: left;
+  padding: 30px 15px;
 
+  background-color: #f3f3f3;
+  margin: 30px -15px;
 }
+  .additionally.show {padding-bottom: 0;}
 .additionally-content {
   overflow: hidden;
   transition: .5s;
   max-height: 0;
   background-color: #f3f3f3;
 
+
 }
-.additionally-content.show {  max-height: 500px;  padding: 15px 0;}
+.additionally-content.show {
+  max-height: 2000px;
+  padding: 15px 0;
+  margin-top: 30px;
+}
 .additionally-link {
   display: flex;
   align-items: center;
-  margin-bottom: 30px;
+
   color: #333;
   text-decoration: none;
   cursor: pointer;
@@ -341,11 +427,22 @@ export default {
   margin-left: 15px;
   margin-bottom: 3px;
 }
+.additionally-link.show {
+  background-color: #f3f3f3;
+}
 .additionally-link.show:after {
   transform: rotate(225deg);
   margin-bottom: -6px;
 }
 
+.compozit .compatibility-block{  margin: 15px;}
+.compozit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 30px;
+
+}
 
 @media (max-width: 500px) {
     .date-retro {justify-content: space-between;}
