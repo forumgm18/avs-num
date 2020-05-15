@@ -1,11 +1,11 @@
 <template>
   <div class="row" v-bind:class="bgr">
     <div class="cell">{{title}} {{name}}</div>
-    <div class="cell">{{v1}}</div>
-    <div class="cell">{{v2}}</div>
-    <div class="cell">{{v3}}</div>
-    <div class="cell">{{v4}}</div>
-    <div class="cell">{{v5}}</div>
+    <div class="cell">{{v[0]}}</div>
+    <div class="cell">{{v[1]}}</div>
+    <div class="cell">{{v[2]}}</div>
+    <div class="cell">{{v[3]}}</div>
+    <div class="cell">{{v[4]}}</div>
   </div>
 
 </template>
@@ -13,7 +13,13 @@
 <script>
     export default {
         name: "baseTable2Row",
-        props:['v1','v2','v3','v4','v5','title','name','bgr'],
+        // props:['v1','v2','v3','v4','v5','title','name','bgr'],
+        props:{
+            'v': Array,
+            'title': String,
+            'name': String,
+            'bgr': String
+        },
     }
 </script>
 
@@ -33,6 +39,11 @@
     line-height: 30px;
     font-size: 18px;
     color: #333;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .table .row:not(:last-child) {  border-bottom-width: 1px;}

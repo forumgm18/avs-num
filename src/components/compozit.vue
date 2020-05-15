@@ -41,8 +41,8 @@
     export default {
         name: "compozit",
         props: {
-            'a1': String,
-            'a2': String,
+            'a1': [String, Number],
+            'a2': [String, Number],
             'title': String,
             'tp': Boolean
         },

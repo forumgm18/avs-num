@@ -52,22 +52,19 @@
           <div class="el-input__inner num-str ark"> {{otch | strToArkan }} </div>
         </div>
         <div class="row date-info">
-
-          <template>
-            <div class="block">
-                <div class="label">Дата Рождения:</div>
-                <div class="date-retro">
-                    <el-date-picker
-                          v-model="date"
-                          type="date"
-                          format="dd.MM.yyyy"
-                          value-format="yyyy-MM-dd"
-                          placeholder="Дата рождения">
-                  </el-date-picker>
-                  <el-checkbox v-model="retro" v-if="date">Ретроградный</el-checkbox>
-              </div>
+          <div class="block">
+              <div class="label">Дата Рождения:</div>
+              <div class="date-retro">
+                  <el-date-picker
+                        v-model="date"
+                        type="date"
+                        format="dd.MM.yyyy"
+                        value-format="yyyy-MM-dd"
+                        placeholder="Дата рождения">
+                </el-date-picker>
+                <el-checkbox v-model="retro" v-if="date">Ретроградный</el-checkbox>
             </div>
-          </template>
+          </div>
           <div class="matrix-code" v-if="date">
               <div class="label">Матричный код</div>
               <div class="matrix-content">
@@ -116,22 +113,19 @@
               <div class="el-input__inner num-str ark"> {{otch2 | strToArkan }} </div>
             </div>
             <div class="row date-info">
-
-              <template>
-                <div class="block">
-                  <div class="label">Дата Рождения:</div>
-                  <div class="date-retro">
-                    <el-date-picker
-                        v-model="date2"
-                        type="date"
-                        format="dd.MM.yyyy"
-                        value-format="yyyy-MM-dd"
-                        placeholder="Дата рождения">
-                    </el-date-picker>
-                    <el-checkbox v-model="retro2" v-if="date2">Ретроградный</el-checkbox>
-                  </div>
+              <div class="block">
+                <div class="label">Дата Рождения:</div>
+                <div class="date-retro">
+                  <el-date-picker
+                      v-model="date2"
+                      type="date"
+                      format="dd.MM.yyyy"
+                      value-format="yyyy-MM-dd"
+                      placeholder="Дата рождения">
+                  </el-date-picker>
+                  <el-checkbox v-model="retro2" v-if="date2">Ретроградный</el-checkbox>
                 </div>
-              </template>
+              </div>
               <div class="matrix-code" v-if="date2">
                 <div class="label">Матричный код</div>
                 <div class="matrix-content">
@@ -157,22 +151,21 @@
       </div>
 
       <div v-if="date && date2">
-
-      <h2>Композиты</h2>
+        <h2>Композиты</h2>
         <div class="table">
-          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v1="OPV1" :v2="OPV2" :v3="OPV3" :v4="OPV4" :v5="OPV5"></base-table2-row>
-          <base-table2-row bgr="part2" title="ОПВ"  :name="name2" :v1="OPV1_2" :v2="OPV2_2" :v3="OPV3_2" :v4="OPV4_2" :v5="OPV5_2"></base-table2-row>
+          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v="OPV"></base-table2-row>
+          <base-table2-row bgr="part2" title="ОПВ" :name="name2" :v="OPV2"></base-table2-row>
 
         </div>
-      <div class="compozit">
-        <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>
-        <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>
-        <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>
-        <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>
-        <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>
-        <compozit :a1="TP1" :a2="TP1_2" tp title="ТП"></compozit>
+        <div class="compozit">
+          <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>
+          <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>
+          <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>
+          <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>
+          <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>
+          <compozit :a1="TP[0]" :a2="TP2[0]" tp title="ТП"></compozit>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -200,7 +193,6 @@ export default {
 
   data() {
     return {
-
       fam: '',
       name: '',
       // name: 'Андрей',
@@ -219,8 +211,6 @@ export default {
         // date2: '1967-07-03',
         date2: null,
 
-
-
     }
   },
   filters: {
@@ -228,7 +218,6 @@ export default {
       strToNum: function(s) {return func.strToNum(s); },
       strToNumStr: function(s) { return func.strToNumStr(s);},
       strToArkan: function(s) {return func.strToArkan(s); }
-
 
   },
   computed: {
@@ -254,42 +243,23 @@ export default {
       traitsMinus: function () { return  func.traitsMinus(this.date).toString() || ''; },
       numberOfLife: function () { return  func.numberOfLife(this.date).toString() || ''; },
       arkNumberOfLife: function () { return  func.ArkNumberOfLife(this.date).toString() || ''; },
-      p2: function () { return  (func.numberOfLife(this.date) + 9).toString() || ''; },
-      p3: function () { return  (func.numberOfLife(this.date) + 18).toString() || ''; },
-      p4: function () { return  (func.numberOfLife(this.date) + 27).toString() || ''; },
-      p5: function () { return  (func.numberOfLife(this.date) + 36).toString() || ''; },
-      TP1: function () { return  func.TP1(this.date).toString() || ''; },
-      TP1_2: function () { return  func.TP1(this.date2).toString() || ''; },
-      TP2: function () { return  func.TP2(this.date).toString() || ''; },
-      TP3: function () { return  func.TP3(this.date).toString() || ''; },
-      TP4: function () { return  func.TP4(this.date).toString() || ''; },
-      TP5: function () { return  func.TP5(this.date).toString() || ''; },
-      OPV1: function () { return  func.OPV1(this.date).toString() || ''; },
-      OPV2: function () { return  func.OPV2(this.date).toString() || ''; },
-      OPV3: function () { return  func.OPV3(this.date).toString() || ''; },
-      OPV4: function () { return  func.OPV4(this.date).toString() || ''; },
-      OPV5: function () { return  func.OPV5(this.date).toString() || ''; },
 
-      OPV1_2: function () { return  func.OPV1(this.date2).toString() || ''; },
-      OPV2_2: function () { return  func.OPV2(this.date2).toString() || ''; },
-      OPV3_2: function () { return  func.OPV3(this.date2).toString() || ''; },
-      OPV4_2: function () { return  func.OPV4(this.date2).toString() || ''; },
-      OPV5_2: function () { return  func.OPV5(this.date2).toString() || ''; },
+      OPV: function () { return  func.arrayOPV(this.date); },
+      TP: function () { return  func.arrayTP(this.date); },
 
-      roof1: function () { return  func.roof1(this.date).toString() || ''; },
-      roof2: function () { return  func.roof2(this.date).toString() || ''; },
-      roof3: function () { return  func.roof3(this.date).toString() || ''; },
-      roof4: function () { return  func.roof4(this.date).toString() || ''; },
-      roof5: function () { return  func.roof5(this.date).toString() || ''; },
+      OPV2: function () { return  func.arrayOPV(this.date2); },
+      TP2: function () { return  func.arrayTP(this.date2); },
 
-      footer1: function () { return  func.footer1(this.date).toString() || ''; },
-      footer2: function () { return  func.footer2(this.date).toString() || ''; },
-      footer3: function () { return  func.footer3(this.date).toString() || ''; },
-      footer4: function () { return  func.footer4(this.date).toString() || ''; },
-      footer5: function () { return  func.footer5(this.date).toString() || ''; },
+      roof: function () { return  func.arrayRoof(this.date); },
+      footer: function () { return  func.arrayFooter(this.date);},
+
+      roof2: function () { return  func.arrayRoof(this.date2); },
+      footer2: function () { return  func.arrayFooter(this.date2);},
+
 
       matrixCode: function () { return  func.matrixCode(this.date) || 0; }, // Матричный код (или ретроградный)
       trueMatrixCode: function () { return  func.trueMatrixCode(this.date, this.retro) || 0; }, // Истинный Матричный код в случае ретроградности
+
       matrixCode2: function () { return  func.matrixCode(this.date2) || 0; }, // Матричный код (или ретроградный)
       trueMatrixCode2: function () { return  func.trueMatrixCode(this.date2, this.retro2) || 0; }, // Истинный Матричный код в случае ретроградности
 

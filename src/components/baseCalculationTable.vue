@@ -75,6 +75,6 @@
         justify-content: center;
         margin-bottom: 2px;
     }
-    .base-table .row > div{  width: calc( 100% / 5);}
+    .base-table .row > div{  width: calc( 100% / 4);}
     .base-table .row > div:not(:last-child){ margin-right: 2px;}
 </style>
