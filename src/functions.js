@@ -165,6 +165,30 @@ export function OPV4(data) {
 export function OPV5(data) {
     return numToArkan(OPV1(data)+OPV2(data)+OPV3(data)+OPV4(data));
 }
+export function arrayOPV(data) { // Возвращает массив ОПВ по дате
+    let res=[];
+    res[0] = OPV1(data);
+    res[1] = OPV2(data);
+    res[2] = OPV3(data);
+    res[3] = OPV4(data);
+    res[4] = OPV5(data);
+    return res;
+}
+export function genericOPV(data1, data2) { // Возвращает массив общих ОПВ 2х человек по их датам рождения
+    let res=[];
+    let o1 = arrayOPV(data1);
+    let o2 = arrayOPV(data2);
+
+    for (let i = 0; i< o1.length; i++) {
+        if (o2.includes(o1[i], 0)) {res.push(o1[i])}
+    }
+    return res;
+}
+export function isOPV(val, data) { // Возвращает true если val является какой-либо ОПВ человека.
+    let arrOPV = arrayOPV(data);
+    val = parseInt(val);
+    return arrOPV.includes(val, 0);
+}
 
 export function numberOfLife(data) {
     let dd = new Date(data);

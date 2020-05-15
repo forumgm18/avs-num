@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-bind:class="bgr">
     <div class="cell">{{title}} {{name}}</div>
     <div class="cell">{{v1}}</div>
     <div class="cell">{{v2}}</div>
@@ -13,7 +13,7 @@
 <script>
     export default {
         name: "baseTable2Row",
-        props:['v1','v2','v3','v4','v5','title','name'],
+        props:['v1','v2','v3','v4','v5','title','name','bgr'],
     }
 </script>
 

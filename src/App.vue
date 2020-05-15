@@ -160,8 +160,8 @@
 
       <h2>Композиты</h2>
         <div class="table">
-          <base-table2-row title="ОПВ" :name="name" :v1="OPV1" :v2="OPV2" :v3="OPV3" :v4="OPV4" :v5="OPV5"></base-table2-row>
-          <base-table2-row title="ОПВ"  :name="name2" :v1="OPV1_2" :v2="OPV2_2" :v3="OPV3_2" :v4="OPV4_2" :v5="OPV5_2"></base-table2-row>
+          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v1="OPV1" :v2="OPV2" :v3="OPV3" :v4="OPV4" :v5="OPV5"></base-table2-row>
+          <base-table2-row bgr="part2" title="ОПВ"  :name="name2" :v1="OPV1_2" :v2="OPV2_2" :v3="OPV3_2" :v4="OPV4_2" :v5="OPV5_2"></base-table2-row>
 
         </div>
       <div class="compozit">
@@ -170,7 +170,7 @@
         <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>
         <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>
         <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>
-        <compozit :a1="TP1" :a2="TP1_2" title="ТП"></compozit>
+        <compozit :a1="TP1" :a2="TP1_2" tp title="ТП"></compozit>
       </div>
     </div>
     </div>
@@ -203,17 +203,21 @@ export default {
 
       fam: '',
       name: '',
+      // name: 'Андрей',
       otch: '',
       vin: '',
       carNum: '',
       text: '',
-      date: null, // '1981-08-02',
+      // date: '1981-08-02',
+      date: null,
       retro: false,
       retro2: false,
         fam2: '',
         name2: '',
+        // name2: 'Разиля',
         otch2: '',
-        date2: null //'1967-07-03',
+        // date2: '1967-07-03',
+        date2: null,
 
 
 
@@ -303,7 +307,11 @@ export default {
     padding: 0;
 
   }
-#app {
+  .part1 { background: #55aaff!important;}
+  .part2 { background: #ffaaff!important;}
+  .part-duo { background: linear-gradient(90deg, #55aaff 0%, #55aaff 50%, #ffaaff 50%, #ffaaff 100%)!important;}
+
+  #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -342,7 +350,7 @@ export default {
 .base-info{  margin-bottom: 50px;  padding: 15px 0;}
 
 .block > div {    width: 100%!important;}
-.block .label {    text-align: left;}
+.block .label {    text-align: left; margin-bottom: 5px;}
 .textarea { height: initial;  align-self: stretch;  font-size: 14px;}
 
 .date-retro {
