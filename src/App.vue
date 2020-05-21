@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div id="app">
+    <div id="app1">
       <h1>Нумерология - Таро</h1>
       <div class="additionally">
         <a href="#" class="additionally-link"><span>Дополнительно</span></a>
@@ -28,144 +28,30 @@
         </div>
       </div>
 
-      <div class="base-info">
-        <div class="row source-info header">
-          <div class="head-name"></div>
-          <div class="el-input__inner1 num-str ">Цифрами</div>
-          <div class="el-input__inner1 num-str ark">Аркан</div>
-        </div>
-        <div class="row source-info">
-          <el-input  placeholder="Фамилия"  v-model="fam"  clearable>  </el-input>
-          <div class="el-input__inner num-str"> {{fam | strToNumStr }} </div>
-          <div class="el-input__inner num-str ark"> {{fam | strToArkan }} </div>
-        </div>
-<!--        <taro-input placeholder="Фамилия" :str="fam"></taro-input>-->
-
-        <div class="row source-info">
-          <el-input  placeholder="Имя"  v-model="name"  clearable>  </el-input>
-          <div class="el-input__inner num-str"> {{ name | strToNumStr }} </div>
-          <div class="el-input__inner num-str ark"> {{ name | strToArkan }} </div>
-        </div>
-        <div class="row source-info">
-          <el-input  placeholder="Отчество"  v-model="otch"  clearable>  </el-input>
-          <div class="el-input__inner num-str"> {{otch |strToNumStr }} </div>
-          <div class="el-input__inner num-str ark"> {{otch | strToArkan }} </div>
-        </div>
-        <div class="row date-info">
-          <div class="block">
-              <div class="label">Дата Рождения:</div>
-              <div class="date-retro">
-                  <el-date-picker
-                        v-model="date"
-                        type="date"
-                        format="dd.MM.yyyy"
-                        value-format="yyyy-MM-dd"
-                        placeholder="Дата рождения">
-                </el-date-picker>
-                <el-checkbox v-model="retro" v-if="date">Ретроградный</el-checkbox>
-            </div>
-          </div>
-          <div class="matrix-code" v-if="date">
-              <div class="label">Матричный код</div>
-              <div class="matrix-content">
-                <div v-if="retro">
-                  <span>Ретроградно:</span>
-                  <span>{{matrixCode}}</span>
-                </div>
-                <div>
-                  <span>Истинный:</span>
-                  <span>{{trueMatrixCode}}</span>
-                </div>
-              </div>
-          </div>
-        </div>
-
-      </div>
-      <div v-if="date">
-        <h2>Базовый расчет</h2>
-        <base-calculation-table :date="date" ></base-calculation-table>
-        <h2>Таблица</h2>
-        <base-table2 :date="date"></base-table2>
-      </div>
-
+      <person :index="0"></person>
       <div class="additionally">
         <a href="#" class="additionally-link"><span>Совместимость (Добавить Партнера)</span></a>
         <div class="additionally-content">
-          <div class="base-info">
-            <div class="row source-info header">
-              <div class="head-name"></div>
-              <div class="el-input__inner1 num-str ">Цифрами</div>
-              <div class="el-input__inner1 num-str ark">Аркан</div>
-            </div>
-            <div class="row source-info">
-              <el-input  placeholder="Фамилия"  v-model="fam2"  clearable>  </el-input>
-              <div class="el-input__inner num-str"> {{fam2 | strToNumStr }} </div>
-              <div class="el-input__inner num-str ark"> {{fam2 | strToArkan }} </div>
-            </div>
-            <div class="row source-info">
-              <el-input  placeholder="Имя"  v-model="name2"  clearable>  </el-input>
-              <div class="el-input__inner num-str"> {{ name2 | strToNumStr }} </div>
-              <div class="el-input__inner num-str ark"> {{ name2 | strToArkan }} </div>
-            </div>
-            <div class="row source-info">
-              <el-input  placeholder="Отчество"  v-model="otch2"  clearable>  </el-input>
-              <div class="el-input__inner num-str"> {{otch2 |strToNumStr }} </div>
-              <div class="el-input__inner num-str ark"> {{otch2 | strToArkan }} </div>
-            </div>
-            <div class="row date-info">
-              <div class="block">
-                <div class="label">Дата Рождения:</div>
-                <div class="date-retro">
-                  <el-date-picker
-                      v-model="date2"
-                      type="date"
-                      format="dd.MM.yyyy"
-                      value-format="yyyy-MM-dd"
-                      placeholder="Дата рождения">
-                  </el-date-picker>
-                  <el-checkbox v-model="retro2" v-if="date2">Ретроградный</el-checkbox>
-                </div>
-              </div>
-              <div class="matrix-code" v-if="date2">
-                <div class="label">Матричный код</div>
-                <div class="matrix-content">
-                  <div v-if="retro2">
-                    <span>Ретроградно:</span>
-                    <span>{{matrixCode2}}</span>
-                  </div>
-                  <div>
-                    <span>Истинный:</span>
-                    <span>{{trueMatrixCode2}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="date2">
-            <h2>Базовый расчет</h2>
-            <base-calculation-table :date="date2"></base-calculation-table>
-            <h2>Таблица</h2>
-            <base-table2 :date="date2"></base-table2>
-          </div>
+          <person :index="1"></person>
         </div>
       </div>
 
-      <div v-if="date && date2">
-        <h2>Композиты</h2>
-        <div class="table">
-          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v="OPV"></base-table2-row>
-          <base-table2-row bgr="part2" title="ОПВ" :name="name2" :v="OPV2"></base-table2-row>
+<!--      <div v-if="date && date2">-->
+<!--        <h2>Композиты</h2>-->
+<!--        <div class="table">-->
+<!--          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v="OPV"></base-table2-row>-->
+<!--          <base-table2-row bgr="part2" title="ОПВ" :name="name2" :v="OPV2"></base-table2-row>-->
 
-        </div>
-        <div class="compozit">
-          <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>
-          <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>
-          <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>
-          <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>
-          <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>
-          <compozit :a1="TP[0]" :a2="TP2[0]" tp title="ТП"></compozit>
-        </div>
-      </div>
+<!--        </div>-->
+<!--        <div class="compozit">-->
+<!--          <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>-->
+<!--          <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>-->
+<!--          <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>-->
+<!--          <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>-->
+<!--          <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>-->
+<!--          <compozit :a1="TP[0]" :a2="TP2[0]" tp title="ТП"></compozit>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -173,46 +59,51 @@
 <script>
 import * as func from './functions.js';
 // import tabCell from './components/tabCell.vue'
-import baseCalculationTable from './components/baseCalculationTable.vue'
-import baseTable2 from './components/baseTable2.vue'
-import baseTable2Row from './components/baseTable2Row.vue'
-import compozit from './components/compozit.vue'
+import person from './components/person.vue'
+// import baseCalculationTable from './components/baseCalculationTable.vue'
+// import baseTable2 from './components/baseTable2.vue'
+
+// import baseTable2Row from './components/baseTable2Row.vue'
+// import compozit from './components/compozit.vue'
+
 // import taroInput from './components/taroInput.vue'
+import store from './store';
 
 
 export default {
   name: 'App',
   components: {
       // tabCell,
-      baseCalculationTable,
-      baseTable2,
-      baseTable2Row,
-      compozit,
+      person,
+      // baseCalculationTable,
+      // baseTable2,
+      // baseTable2Row,
+      // compozit,
       // taroInput
   },
-
-  data() {
-    return {
-      fam: '',
-      name: '',
-      // name: 'Андрей',
-      otch: '',
-      vin: '',
-      carNum: '',
-      text: '',
-      // date: '1981-08-02',
-      date: null,
-      retro: false,
-      retro2: false,
-        fam2: '',
-        name2: '',
-        // name2: 'Разиля',
-        otch2: '',
-        // date2: '1967-07-03',
-        date2: null,
-
-    }
-  },
+  store,
+  // data() {
+  //   return {
+  //     fam: '',
+  //     name: '',
+  //     // name: 'Андрей',
+  //     otch: '',
+  //     vin: '',
+  //     carNum: '',
+  //     text: '',
+  //     // date: '1981-08-02',
+  //     date: null,
+  //     retro: false,
+  //     retro2: false,
+  //       fam2: '',
+  //       name2: '',
+  //       // name2: 'Разиля',
+  //       otch2: '',
+  //       // date2: '1967-07-03',
+  //       date2: null,
+  //
+  //   }
+  // },
   filters: {
       charToNum: function(s) {return func.charToNum(s);},
       strToNum: function(s) {return func.strToNum(s); },
@@ -221,6 +112,19 @@ export default {
 
   },
   computed: {
+      vin: {
+          get () { return this.$store.state.vin },
+          set (value) { this.$store.commit('set_Vin', value) }
+      },
+      carNum: {
+          get () { return this.$store.state.carNum },
+          set (value) { this.$store.commit('set_CarNum', value) }
+      },
+      text: {
+          get () { return this.$store.state.text },
+          set (value) { this.$store.commit('set_Text', value) }
+      },
+
       arkDay: function () { return  func.ArkDay(this.date).toString() || ''; },
       arkDay2: function () { return  func.ArkDay(this.date2).toString() || ''; },
       arkMonth: function () { return  func.ArkMonth(this.date).toString() || ''; },
