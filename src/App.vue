@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <h1 class="fav">
-        <img src="/img/fav1.png" alt="">
+        <span class="img"></span>
         <span>Нумерология - для Жизни</span>
       </h1>
       <div class="additionally">
@@ -258,6 +258,7 @@ export default {
  .container {
      /*border: 1px solid red;*/
    margin: 0 auto;
+   padding: 0 15px;
    max-width: 992px;
    width: 100%;
    margin-bottom: 50px;
@@ -268,11 +269,15 @@ export default {
    display: flex;
    align-items: center;
  }
- .fav img{
-   max-height: 70px;
-   height: 100%;
-   width: auto;
+ .fav .img{
+   display: inline-block;
+   font-size: 70px;
+   height: 1em;
+   width: 1em;
    margin-right: 30px;
+   flex-shrink: 0;
+   background: url(/img/fav1.png) no-repeat center;
+   background-size: contain;
  }
  .row {
    display: flex;
