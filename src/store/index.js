@@ -11,9 +11,9 @@ export const store = new Vuex.Store({
      state : {
       obj : [
          {
-            fam: 'aassa',
+            fam: '',
             // name: '',
-            name: 'Андрей',
+            name: '',
             otch: '',
             // date: '1981-08-02',
             date: null,
