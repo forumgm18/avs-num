@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <div id="app1">
-      <h1>Нумерология - Таро</h1>
+      <h1 class="fav">
+        <img src="/img/fav1.png" alt="">
+        <span>Нумерология - для Жизни</span>
+      </h1>
       <div class="additionally">
         <a href="#" class="additionally-link"><span>Дополнительно</span></a>
         <div class="additionally-content">
@@ -11,48 +13,115 @@
             <div class="el-input__inner1 num-str ark">Аркан</div>
           </div>
           <div class="row source-info">
-            <el-input  placeholder="VIN"  v-model="vin"  clearable>  </el-input>
+            <el-input  placeholder="VIN"  v-model="vin"  clearable/>
             <div class="el-input__inner num-str"> {{vin | strToNumStr }} </div>
             <div class="el-input__inner num-str ark"> {{vin |  strToArkan }} </div>
           </div>
           <div class="row source-info">
-            <el-input  placeholder="Номер машины"  v-model="carNum"  clearable>  </el-input>
+            <el-input  placeholder="Номер машины"  v-model="carNum"  clearable/>
             <div class="el-input__inner num-str"> {{carNum | strToNumStr }} </div>
             <div class="el-input__inner num-str ark"> {{carNum | strToArkan }} </div>
           </div>
           <div class="row source-info text">
-            <el-input  placeholder="Произвольный текст" :rows="3" type="textarea" v-model="text"  clearable>  </el-input>
+            <el-input  placeholder="Произвольный текст" :rows="3" type="textarea" v-model="text"  clearable/>
             <div class="el-input__inner textarea">{{text | strToNumStr }}</div>
             <div class="el-input__inner num-str"> {{text | strToArkan }} </div>
           </div>
         </div>
       </div>
-
       <person :index="0"></person>
-      <div class="additionally">
-        <a href="#" class="additionally-link"><span>Совместимость (Добавить Партнера)</span></a>
-        <div class="additionally-content">
-          <person :index="1"></person>
+      <div class="compozit-block">
+        <div class="compozit-confirm">
+          <el-checkbox v-model="CalcCompozit" v-if="date1">Посчитать Совместимость</el-checkbox>
+        </div>
+
+        <div v-if="CalcCompozit">
+          <div class="compozit-type">
+            <el-radio-group  v-model="CompozitType" size="medium">
+              <el-radio-button label="person" >Копозит c Партнером</el-radio-button>
+              <el-radio-button label="event" >Композит c Событием</el-radio-button>
+            </el-radio-group>
+          </div>
+
+          <div class="compozit-content" v-if="CompozitType === 'person'">
+            <person :index="1"></person>
+          </div>
+          <div class="compozit-content" v-if="CompozitType === 'event'">
+            <el-input  placeholder="Название события"  v-model="eventName"  clearable>  </el-input>
+            <div class="compozit-date-block">
+                <div class="compozit-event-label">Дата события</div>
+                  <el-date-picker
+                      v-model="Date4Compozit"
+                      type="date"
+                      format="dd.MM.yyyy"
+                      value-format="yyyy-MM-dd"
+                      placeholder="Дата События">
+                  </el-date-picker>
+            </div>
+          </div>
+
+
+          <div v-if="date1 && date2 && CompozitType === 'person'">
+            <h2>Композиты</h2>
+            <div class="table">
+              <base-table2-row bgr="part1" title="ОПВ" :name="name1" :date="date1"></base-table2-row>
+              <base-table2-row bgr="part2" title="ОПВ" :name="name2" :date="date2"></base-table2-row>
+            </div>
+            <div class="compozit">
+              <compozit compType="AD" :date1="date1" :date2="date2" title="День"></compozit>
+              <compozit compType="AM" :date1="date1" :date2="date2"  title="Месяц"></compozit>
+              <compozit compType="AY" :date1="date1" :date2="date2"  title="Год"></compozit>
+              <compozit compType="M" :date1="date1" :date2="date2"  title="Миссия"></compozit>
+              <compozit compType="ZK" :date1="date1" :date2="date2"  title="ЗК"></compozit>
+              <compozit compType="TP" :date1="date1" :date2="date2"  tp title="ТП"></compozit>
+            </div>
+          </div>
+
+          <div v-if="date1 && Date4Compozit && CompozitType === 'event'">
+            <h2>Композиты</h2>
+            <div class="table">
+              <base-table2-row bgr="part1" title="ОПВ" :name="name1" :date="date1"></base-table2-row>
+              <base-table2-row bgr="part2" title="ОПВ" name="Событие" :date="Date4Compozit"></base-table2-row>
+            </div>
+            <div class="compozit">
+              <compozit compType="AD" :date1="date1" :date2="Date4Compozit" title="День"></compozit>
+              <compozit compType="AM" :date1="date1" :date2="Date4Compozit"  title="Месяц"></compozit>
+              <compozit compType="AY" :date1="date1" :date2="Date4Compozit"  title="Год"></compozit>
+              <compozit compType="M" :date1="date1" :date2="Date4Compozit"  title="Миссия"></compozit>
+              <compozit compType="ZK" :date1="date1" :date2="Date4Compozit"  title="ЗК"></compozit>
+              <compozit compType="TP" :date1="date1" :date2="Date4Compozit"  tp title="ТП"></compozit>
+            </div>
+          </div>
+
+
         </div>
       </div>
 
-<!--      <div v-if="date && date2">-->
-<!--        <h2>Композиты</h2>-->
-<!--        <div class="table">-->
-<!--          <base-table2-row bgr="part1" title="ОПВ" :name="name" :v="OPV"></base-table2-row>-->
-<!--          <base-table2-row bgr="part2" title="ОПВ" :name="name2" :v="OPV2"></base-table2-row>-->
 
-<!--        </div>-->
-<!--        <div class="compozit">-->
-<!--          <compozit :a1="arkDay" :a2="arkDay2" title="День"></compozit>-->
-<!--          <compozit :a1="arkMonth" :a2="arkMonth2" title="Месяц"></compozit>-->
-<!--          <compozit :a1="arkYear" :a2="arkYear2" title="Год"></compozit>-->
-<!--          <compozit :a1="Mission" :a2="Mission2" title="Миссия"></compozit>-->
-<!--          <compozit :a1="ZK" :a2="ZK2" title="ЗК"></compozit>-->
-<!--          <compozit :a1="TP[0]" :a2="TP2[0]" tp title="ТП"></compozit>-->
-<!--        </div>-->
-<!--      </div>-->
+    <div class="arkan-descriptions" style="display: none">
+      <div v-for="ark in ArkanDesc" :key="ark.id">
+        <h3><strong>Аркан:</strong>{{ark.id}}</h3>
+        <p><strong>Название:</strong>{{ark.name}}</p>
+        <p><strong>Краткое описание:</strong>{{ark.shortDescription}}</p>
+        <p><strong>Небесный покровитель:</strong>{{ark.heavenlyRuler}}</p>
+        <p><strong>Стихия:</strong>{{ark.element}}</p>
+        <p><strong>Цвет:</strong>{{ark.color}}</p>
+        <p><strong>Талисман (камень):</strong>{{ark.talisman}}</p>
+        <p><strong>Эфирное масло:</strong>{{ark.essentialOil}}</p>
+        <p><strong>Таланты:</strong>{{ark.talents}}</p>
+        <p><strong>Описание личности:</strong>{{ark.personalityDescription}}</p>
+        <p><strong>Кармические черты характера:</strong>{{ark.karmicTraits}}</p>
+        <p><strong>События в +:</strong>{{ark.eventsPlus}}</p>
+        <p><strong>События в -:</strong>{{ark.eventsMinus}}</p>
+        <p><strong>Урок:</strong>{{ark.lesson}}</p>
+        <p><strong>Задача:</strong>{{ark.challenge}}</p>
+        <p><strong>Социальная Задача:</strong>{{ark.socialChallenge}}</p>
+        <p><strong>Профессии:</strong>{{ark.professions}}</p>
+
+      </div>
+
     </div>
+
   </div>
 </template>
 
@@ -63,8 +132,8 @@ import person from './components/person.vue'
 // import baseCalculationTable from './components/baseCalculationTable.vue'
 // import baseTable2 from './components/baseTable2.vue'
 
-// import baseTable2Row from './components/baseTable2Row.vue'
-// import compozit from './components/compozit.vue'
+import baseTable2Row from './components/baseTable2Row.vue'
+import compozit from './components/compozit.vue'
 
 // import taroInput from './components/taroInput.vue'
 import store from './store';
@@ -77,33 +146,11 @@ export default {
       person,
       // baseCalculationTable,
       // baseTable2,
-      // baseTable2Row,
-      // compozit,
+      baseTable2Row,
+      compozit,
       // taroInput
   },
   store,
-  // data() {
-  //   return {
-  //     fam: '',
-  //     name: '',
-  //     // name: 'Андрей',
-  //     otch: '',
-  //     vin: '',
-  //     carNum: '',
-  //     text: '',
-  //     // date: '1981-08-02',
-  //     date: null,
-  //     retro: false,
-  //     retro2: false,
-  //       fam2: '',
-  //       name2: '',
-  //       // name2: 'Разиля',
-  //       otch2: '',
-  //       // date2: '1967-07-03',
-  //       date2: null,
-  //
-  //   }
-  // },
   filters: {
       charToNum: function(s) {return func.charToNum(s);},
       strToNum: function(s) {return func.strToNum(s); },
@@ -112,9 +159,29 @@ export default {
 
   },
   computed: {
+      date1: {
+          get () { return this.$store.state.obj[0].date },
+          // set (value) { this.$store.commit('set_Date', {index: 0, value: value}) }
+      },
+      date2: {
+          get () { return this.$store.state.obj[1].date },
+          // set (value) { this.$store.commit('set_Date', {index: 0, value: value}) }
+      },
+
+      name1: {
+          get () { return this.$store.state.obj[0].name },
+      },
+      name2: {
+          get () { return this.$store.state.obj[1].name },
+      },
+
       vin: {
           get () { return this.$store.state.vin },
           set (value) { this.$store.commit('set_Vin', value) }
+      },
+      eventName: {
+          get () { return this.$store.state.eventName },
+          set (value) { this.$store.commit('set_EventName', value) }
       },
       carNum: {
           get () { return this.$store.state.carNum },
@@ -125,51 +192,40 @@ export default {
           set (value) { this.$store.commit('set_Text', value) }
       },
 
-      arkDay: function () { return  func.ArkDay(this.date).toString() || ''; },
-      arkDay2: function () { return  func.ArkDay(this.date2).toString() || ''; },
-      arkMonth: function () { return  func.ArkMonth(this.date).toString() || ''; },
-      arkMonth2: function () { return  func.ArkMonth(this.date2).toString() || ''; },
-      arkYear: function () { return  func.ArkYear(this.date).toString() || ''; },
-      arkYear2: function () { return  func.ArkYear(this.date2).toString() || ''; },
-      ADplusAM: function () { return  func.ADplusAM(this.date).toString() || ''; },
-      AMplusAY: function () { return  func.AMplusAY(this.date).toString() || ''; },
-      ZK: function () { return  func.ZK(this.date).toString() || ''; },
-      ZK2: function () { return  func.ZK(this.date2).toString() || ''; },
-      Mission: function () { return  func.Mission(this.date).toString() || ''; },
-      Mission2: function () { return  func.Mission(this.date2).toString() || ''; },
-      unrealizedGoal: function () { return  func.unrealizedGoal(this.date).toString() || ''; },
-      Future: function () { return  func.future(this.date).toString() || ''; },
-      Instrument: function () { return  func.Instrument(this.date).toString() || ''; },
-      Stimul: function () { return  func.Stimul(this.date).toString() || ''; },
-      Troubles: function () { return  func.Troubles(this.date).toString() || ''; },
-      perceptionByOthers: function () { return  func.perceptionByOthers(this.date).toString() || ''; },
-      selfPerception: function () { return  func.selfPerception(this.date).toString() || ''; },
-      traitsMinus: function () { return  func.traitsMinus(this.date).toString() || ''; },
-      numberOfLife: function () { return  func.numberOfLife(this.date).toString() || ''; },
-      arkNumberOfLife: function () { return  func.ArkNumberOfLife(this.date).toString() || ''; },
+      CompozitEventDate: {
+          get () { return this.$store.state.compozit_event_date },
+          set (value) { this.$store.commit('set_CompozitEventDate', value) }
+      },
 
-      OPV: function () { return  func.arrayOPV(this.date); },
-      TP: function () { return  func.arrayTP(this.date); },
-
-      OPV2: function () { return  func.arrayOPV(this.date2); },
-      TP2: function () { return  func.arrayTP(this.date2); },
-
-      roof: function () { return  func.arrayRoof(this.date); },
-      footer: function () { return  func.arrayFooter(this.date);},
-
-      roof2: function () { return  func.arrayRoof(this.date2); },
-      footer2: function () { return  func.arrayFooter(this.date2);},
+      CompozitPerson: {
+          get () { return this.$store.state.compozit_person },
+          set (value) { this.$store.commit('set_CompozitPerson', value) }
+      },
 
 
-      matrixCode: function () { return  func.matrixCode(this.date) || 0; }, // Матричный код (или ретроградный)
-      trueMatrixCode: function () { return  func.trueMatrixCode(this.date, this.retro) || 0; }, // Истинный Матричный код в случае ретроградности
+      CompozitType: {
+          get () { return this.$store.state.compozit_type },
+          set (value) { this.$store.commit('set_CompozitType', value) }
+      },
 
-      matrixCode2: function () { return  func.matrixCode(this.date2) || 0; }, // Матричный код (или ретроградный)
-      trueMatrixCode2: function () { return  func.trueMatrixCode(this.date2, this.retro2) || 0; }, // Истинный Матричный код в случае ретроградности
+      CalcCompozit: {
+          get () { return this.$store.state.calc_compozit },
+          set (value) { this.$store.commit('set_CalcCompozit', value) }
+      },
 
+      Date4Compozit: {
+          get () { return this.$store.state.date4compozit },
+          set (value) { this.$store.commit('set_Date4Compozit', value) }
+      },
+      ArkanDesc: {
+          get () { return this.$store.state.arkanDescription },
+
+      },
 
   },
-
+  mounted () {
+        this.$store.dispatch('setArkanDescription');
+    }
 }
 
 </script>
@@ -179,6 +235,8 @@ export default {
   body {
     margin: 0;
     padding: 0;
+    background: url(/img/bgr-num.png) no-repeat center top;
+    background-attachment: fixed;
 
   }
   .part1 { background: #55aaff!important;}
@@ -203,7 +261,18 @@ export default {
    max-width: 992px;
    width: 100%;
    margin-bottom: 50px;
+   background-color: #fff;
 
+ }
+ .fav {
+   display: flex;
+   align-items: center;
+ }
+ .fav img{
+   max-height: 70px;
+   height: 100%;
+   width: auto;
+   margin-right: 30px;
  }
  .row {
    display: flex;
@@ -324,6 +393,25 @@ export default {
   justify-content: space-around;
   margin-top: 30px;
 
+}
+.compozit-block {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.compozit-confirm {
+  margin-bottom: 30px;
+}
+.compozit-type {
+  margin-bottom: 30px;
+}
+.compozit-date-block {
+  max-width: 220px;
+  margin-top: 15px;
+}
+.compozit-event-label {
+
+  margin-bottom: 5px;
 }
 
 @media (max-width: 500px) {

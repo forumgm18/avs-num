@@ -390,3 +390,48 @@ export function compatibilityArray(a1,a2) {
     res[3] = numToArkan(res[4]-res[5]);                  // A4
     return res;
 }
+
+// Возврращает массив "совместимости" по начальным параметрам
+// d1 - дата партнера1
+// d2 - дата партнера2
+// compType - тип Композита (AD, AM, AY, M, TP1, ZK)
+export function compatibilityFromDateArray(d1,d2, compType) {
+    let a1, a2;
+
+    compType = compType ? compType.toString().toUpperCase() : 'AD';
+
+    switch (compType) {
+        case 'AD' :
+            a1 = ArkDay(d1);
+            a2 = ArkDay(d2);
+            break;
+
+        case 'AM' :
+            a1 = ArkMonth(d1);
+            a2 = ArkMonth(d2);
+            break;
+
+        case 'AY' :
+            a1 = ArkYear(d1);
+            a2 = ArkYear(d2);
+            break;
+
+        case 'M' :
+            a1 = Mission(d1);
+            a2 = Mission(d2);
+            break;
+
+        case 'ZK' :
+            a1 = ZK(d1);
+            a2 = ZK(d2);
+            break;
+
+        case 'TP' :
+            a1 = TP1(d1);
+            a2 = TP1(d2);
+            break;
+
+    }
+
+    return compatibilityArray(a1,a2);
+}

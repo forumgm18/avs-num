@@ -11,15 +11,25 @@
 </template>
 
 <script>
+    import * as func from './../functions.js';
+
     export default {
         name: "baseTable2Row",
         // props:['v1','v2','v3','v4','v5','title','name','bgr'],
         props:{
-            'v': Array,
+            'date': [Date, String],
             'title': String,
             'name': String,
             'bgr': String
         },
+        data() {
+            return {
+                v: [],
+            }
+        },
+        mounted: function () {
+            this.v = func.arrayOPV(this.date)
+        }
     }
 </script>
 

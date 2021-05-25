@@ -41,14 +41,19 @@
     export default {
         name: "compozit",
         props: {
-            'a1': [String, Number],
-            'a2': [String, Number],
+            'date1': [Date,String],
+            'date2': [Date,String],
+            'compType': String,  // AD, AM, AY, M, TP1, ZK
+            // 'a1': [String, Number],
+            // 'a2': [String, Number],
             'title': String,
             'tp': Boolean
         },
         data() {
             return {
                 comp:[],
+                a1 : null,
+                a2 : null,
                 a3 : '',
                 a4 : '',
                 a1a3 : '',
@@ -57,13 +62,62 @@
             }
         },
         mounted: function () {
-          this.comp = func.compatibilityArray(this.a1,this.a2);
+          // this.comp = func.compatibilityArray(this.a1,this.a2);
+
+          // if (!this.tp) {
+          //     this.a3 = getClass(this.comp[2], this.$parent.date, this.$parent.date2);
+          //     this.a4 = getClass(this.comp[3], this.$parent.date, this.$parent.date2);
+          //     this.a1a3 = getClass(this.comp[4], this.$parent.date, this.$parent.date2);
+          //     this.a2a3 = getClass(this.comp[5], this.$parent.date, this.$parent.date2);
+          // }
+          //   if (this.compType) {
+          //       this.compType = this.compType.toUpperCase();
+          //   } else {
+          //       this.compType = 'AD'
+          //   }
+          //
+          //   switch (this.compType) {
+          //     case 'AD' :
+          //         this.a1 = func.ArkDay(this.date1);
+          //         this.a2 = func.ArkDay(this.date2);
+          //         break;
+          //
+          //     case 'AM' :
+          //         this.a1 = func.ArkMonth(this.date1);
+          //         this.a2 = func.ArkMonth(this.date2);
+          //         break;
+          //
+          //     case 'AY' :
+          //         this.a1 = func.ArkYear(this.date1);
+          //         this.a2 = func.ArkYear(this.date2);
+          //         break;
+          //
+          //     case 'M' :
+          //         this.a1 = func.Mission(this.date1);
+          //         this.a2 = func.Mission(this.date2);
+          //         break;
+          //
+          //     case 'ZK' :
+          //         this.a1 = func.ZK(this.date1);
+          //         this.a2 = func.ZK(this.date2);
+          //         break;
+          //
+          //     case 'TP' :
+          //         this.a1 = func.TP1(this.date1);
+          //         this.a2 = func.TP1(this.date2);
+          //         break;
+          //
+          //   }
+
+            // this.comp = func.compatibilityArray(this.a1,this.a2);
+            this.comp = func.compatibilityFromDateArray(this.date1,this.date2,this.compType);
+
 
           if (!this.tp) {
-              this.a3 = getClass(this.comp[2], this.$parent.date, this.$parent.date2);
-              this.a4 = getClass(this.comp[3], this.$parent.date, this.$parent.date2);
-              this.a1a3 = getClass(this.comp[4], this.$parent.date, this.$parent.date2);
-              this.a2a3 = getClass(this.comp[5], this.$parent.date, this.$parent.date2);
+              this.a3 = getClass(this.comp[2], this.date1, this.date2);
+              this.a4 = getClass(this.comp[3], this.date1, this.date2);
+              this.a1a3 = getClass(this.comp[4], this.date1, this.date2);
+              this.a2a3 = getClass(this.comp[5], this.date1, this.date2);
           }
         },
     }

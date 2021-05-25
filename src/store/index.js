@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -36,6 +37,15 @@ export const store = new Vuex.Store({
       vin: '',
       carNum: '',
       text: '',
+      eventName: '',
+      calc_compozit: false,  // считать совместимость (с партнером по умолчанию)
+      compozit_person: true,    // совместимость с партнером
+      compozit_event_date: false,    // совместимость с объектом/событием (датой)
+      compozit_type: 'person',    // совместимость с партнером (partner) или объектом/событием (event) (по умолчанию с партнером)
+      // date4compozit: '1981-08-02',
+      date4compozit: null,
+      arkanDescription: null,
+
 
     },
      getters : {
@@ -48,7 +58,11 @@ export const store = new Vuex.Store({
         text: state => {return state.text; },
         date: state => (index) => {return state.obj[index].date; },
         retro: state => (index) => {return state.obj[index].retro; },
-        date4compozit: state => (index) => {return state.obj[index].date4compozit; },
+
+        compozit_person: state => {return state.compozit_person; },
+        compozit_date: state => {return state.compozit_date; },
+        date4compozit: state => {return state.date4compozit; },
+        arkanDescription: state => {return state.arkanDescription; },
 
         strToNum: function(s) {return func.strToNum(s); },
         strToNumStr: function(s) { return func.strToNumStr(s);},
@@ -91,11 +105,19 @@ export const store = new Vuex.Store({
         set_Name: (state, valObj) => {state.obj[valObj.index].name = valObj.value;},
         set_Otch: (state, valObj) => {state.obj[valObj.index].otch = valObj.value;},
         set_Vin: (state, value) => {state.vin = value;},
+        set_EventName: (state, value) => {state.eventName = value;},
         set_CarNum: (state, value) => {state.carNum = value;},
         set_Text: (state, value) => {state.text = value;},
         set_Date: (state, valObj) => {state.obj[valObj.index].date = valObj.value;},
         set_Retro: (state, valObj) => {state.obj[valObj.index].retro = valObj.value;},
-        set_Date4Compozit: (state, valObj) => {state.obj[valObj.index].date4compozit = valObj.value;},
+
+        set_CalcCompozit: (state, val) => {state.calc_compozit = val;},
+        set_CompozitPerson: (state, val) => {state.compozit_person = val;},
+        set_CompozitEventDate: (state, val) => {state.compozit_event_date = val;},
+        set_CompozitType: (state, val) => {state.compozit_type = val;},
+        // set_Date4Compozit: (state, val) => {state.date4compozit = state.date4compozit = val; },
+        set_Date4Compozit: (state, val) => {state.date4compozit = val; },
+        set_arkanDescription: (state, val) => {state.arkanDescription = val; },
     },
      actions : {
         // setFam: async (context, value) => { context.commit('set_Fam', value);  },
@@ -111,10 +133,26 @@ export const store = new Vuex.Store({
         setName: async (context, valObj) => { context.commit('set_Name', valObj);  },
         setOtch: async (context, valObj) => { context.commit('set_Otch', valObj);  },
         setVin: async (context, value) => { context.commit('set_Vin', value);  },
+        setEventName: async (context, value) => { context.commit('set_EventName', value);  },
         setCarName: async (context, value) => { context.commit('set_CarName', value);  },
         setDate: async (context, valObj) => { context.commit('set_Date', valObj);  },
         setRetro: async (context, valObj) => { context.commit('set_Retro', valObj);  },
-        setDate4Compozit: async (context, valObj) => { context.commit('set_Date4Compozit', valObj);  },
+
+        setCalcCompozit: async (context, val) => { context.commit('set_CalcCompozit', val);  },
+        setCompozitEventDate: async (context, val) => { context.commit('set_CompozitEventDate', val);  },
+        setCompozitPerson: async (context, val) => { context.commit('set_CompozitPerson', val);  },
+        setCompozitType: async (context, val) => { context.commit('set_CompozitType', val);  },
+
+        setDate4Compozit: async (context, val) => { context.commit('set_Date4Compozit', val);  },
+        setArkanDescription: async (context) => {
+            axios
+                .get('/dbase/arkan2.json')
+                .then(response => (
+                    context.commit('set_arkanDescription', response.data)))
+                .catch(
+                    context.commit('set_arkanDescription', null)
+            );
+        },
 
     }
 });
